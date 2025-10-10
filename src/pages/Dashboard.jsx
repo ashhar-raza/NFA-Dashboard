@@ -11,9 +11,12 @@ export default function Dashboard() {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-background text-foreground transition-colors duration-500 px-4 py-8">
+    <div
+      style={{ background: "var(--background)", color: "var(--foreground)" }}
+      className="min-h-screen flex flex-col items-center justify-center transition-colors duration-500 px-4 py-8"
+    >
       {/* Heading */}
-      <h1 className="text-5xl font-extrabold text-center mb-16 text-foreground drop-shadow-md">
+      <h1 className="text-center mb-16" style={{ fontSize: "2.5rem", fontWeight: 700, textShadow: "0 4px 10px rgba(0,0,0,0.15)" }}>
         Company Dashboard
       </h1>
 
@@ -23,12 +26,12 @@ export default function Dashboard() {
           <div
             key={card.title}
             onClick={() => navigate(card.path)}
-            className="cursor-pointer rounded-3xl shadow-card transform transition-all duration-300 hover:-translate-y-2 hover:shadow-hover p-12 flex flex-col items-center justify-center card-professional"
+            className="nav-card cursor-pointer flex flex-col items-center justify-center"
           >
-            <h2 className="text-2xl sm:text-3xl font-semibold mb-2 text-center">
+            <h2 style={{ fontSize: "1.5rem", fontWeight: 600, marginBottom: "0.5rem", textAlign: "center" }}>
               {card.title}
             </h2>
-            <p className="text-sm sm:text-base text-center text-muted-foreground">
+            <p style={{ fontSize: "0.875rem", textAlign: "center", color: "var(--muted-foreground)" }}>
               Click to open
             </p>
           </div>
@@ -36,8 +39,8 @@ export default function Dashboard() {
       </div>
 
       {/* Footer */}
-      <div className="mt-16 text-center text-sm text-muted-foreground">
-        © 2025 Your Company. All rights reserved.
+      <div className="footer mt-16">
+        <p>© 2025 Your Company. All rights reserved.</p>
       </div>
     </div>
   );

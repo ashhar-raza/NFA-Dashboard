@@ -18,7 +18,6 @@ export default function BuyerHome() {
   // Filtered and searched data
   const filteredData = useMemo(() => {
     return NfaDetails.filter((item) => {
-      // Search across all fields
       const searchLower = searchTerm.toLowerCase();
       const matchesSearch =
         item.NfaNumber.toLowerCase().includes(searchLower) ||
@@ -54,13 +53,14 @@ export default function BuyerHome() {
         <input
           type="text"
           placeholder="Search..."
-          className="input-professional flex-1 min-w-[200px]"
+          className="input"
+          style={{ flex: 1, minWidth: "200px" }}
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
 
         <select
-          className="dropdown-professional"
+          className="select"
           value={riskFilter}
           onChange={(e) => setRiskFilter(e.target.value)}
         >
@@ -71,7 +71,7 @@ export default function BuyerHome() {
         </select>
 
         <select
-          className="dropdown-professional"
+          className="select"
           value={totalSpendFilter}
           onChange={(e) => setTotalSpendFilter(e.target.value)}
         >
@@ -82,7 +82,7 @@ export default function BuyerHome() {
         </select>
 
         <select
-          className="dropdown-professional"
+          className="select"
           value={rfpDateFilter}
           onChange={(e) => setRfpDateFilter(e.target.value)}
         >
@@ -98,8 +98,8 @@ export default function BuyerHome() {
       </div>
 
       {/* Table */}
-      <div className="overflow-x-auto rounded-lg shadow-card">
-        <table className="table-professional min-w-full">
+      <div className="table-container">
+        <table className="table">
           <thead>
             <tr>
               <th>NFA Number</th>
@@ -115,16 +115,16 @@ export default function BuyerHome() {
           <tbody>
             {filteredData.length ? (
               filteredData.map((item) => (
-                <tr key={item.NfaNumber} className="hover:bg-accent hover:text-accent-foreground">
+                <tr key={item.NfaNumber}>
                   <td>{item.NfaNumber}</td>
                   <td>
                     <span
-                      className={`label-professional ${
+                      className={`status-badge ${
                         item.Status === "Approved"
-                          ? "label-approved"
+                          ? "status-approved"
                           : item.Status === "Pending"
-                          ? "label-pending"
-                          : "label-rejected"
+                          ? "status-pending"
+                          : "status-destructive"
                       }`}
                     >
                       {item.Status}
@@ -134,12 +134,12 @@ export default function BuyerHome() {
                   <td>{calculateTAT(item.createdAt, item.lastModifiedAt)}</td>
                   <td>
                     <span
-                      className={`label-professional ${
+                      className={`risk-badge ${
                         item.RiskCategory === "Low"
-                          ? "label-risk-low"
+                          ? "risk-low"
                           : item.RiskCategory === "Medium"
-                          ? "label-risk-medium"
-                          : "label-risk-high"
+                          ? "risk-medium"
+                          : "risk-high"
                       }`}
                     >
                       {item.RiskCategory}
@@ -152,7 +152,7 @@ export default function BuyerHome() {
               ))
             ) : (
               <tr>
-                <td colSpan={8} className="text-center p-4 text-muted-foreground">
+                <td colSpan={8} style={{ textAlign: "center", padding: "1rem", color: "var(--muted-foreground)" }}>
                   No records found.
                 </td>
               </tr>

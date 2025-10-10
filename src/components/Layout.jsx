@@ -13,26 +13,25 @@ export default function Layout() {
   const hideHeader = location.pathname === '/';
 
   return (
-    <div className="min-h-screen flex flex-col bg-background text-foreground transition-colors duration-500">
+    <div
+      className="min-h-screen flex flex-col transition-colors duration-500"
+      style={{ background: "var(--background)", color: "var(--foreground)" }}
+    >
       {!hideHeader && (
         <header
-          className="flex items-center justify-between px-6 py-4 border-b shadow-md"
+          className="flex items-center justify-between px-6 py-4 mb-6 rounded-lg"
           style={{
-            background: 'var(--card)',
-            borderColor: 'var(--border)',
-            boxShadow: 'var(--shadow-card)',
+            background: "var(--card)",
+            borderBottom: "2px solid var(--border)",
+            boxShadow: "var(--shadow-card)",
+            backdropFilter: "blur(12px)",
           }}
         >
           {/* Left: Back Button */}
           <div>
             <button
               onClick={handleBack}
-              className="rounded-lg px-3 py-2 transition-all duration-200 shadow-sm hover:shadow-hover"
-              style={{
-                background: 'var(--secondary)',
-                color: 'var(--secondary-foreground)',
-                boxShadow: 'var(--shadow-card)',
-              }}
+              className="button-secondary"
             >
               ← Back
             </button>
@@ -40,8 +39,13 @@ export default function Layout() {
 
           {/* Center: Heading */}
           <h1
-            className="text-2xl sm:text-3xl font-bold flex-1 text-center"
-            style={{ color: 'var(--foreground)' }}
+            style={{
+              fontSize: "1.75rem",
+              fontWeight: 700,
+              textAlign: "center",
+              flex: 1,
+              color: "var(--foreground)",
+            }}
           >
             NFA Dashboard
           </h1>
@@ -50,14 +54,14 @@ export default function Layout() {
           <div className="flex items-center gap-3">
             <button
               onClick={toggleTheme}
-              className="btn-primary-gradient px-4 py-2"
+              className="button"
             >
-              {theme === 'light' ? 'Dark Mode' : 'Light Mode'}
+              {theme === "light" ? "Dark Mode" : "Light Mode"}
             </button>
 
             <button
               onClick={handleLogout}
-              className="btn-destructive px-4 py-2"
+              className="button-destructive"
             >
               Logout
             </button>
