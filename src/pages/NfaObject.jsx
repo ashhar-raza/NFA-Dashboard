@@ -29,47 +29,51 @@ export default function NfaObject() {
 
     // Render card item like SAP UI5 Object Page
     const renderHeaderCard = (key, value) => (
-        <div className="flex flex-col p-4 rounded-lg shadow-lg bg-[var(--card-bg)]">
-            <span className="text-[var(--text-muted)] font-semibold">{key}</span>
+        <div className="header-card">
+            <span className="key">{key}</span>
             {isEdit ? (
                 <input
                     type="text"
-                    value={value|| ""}
+                    value={value || ""}
                     onChange={(e) => handleChange(key, e.target.value)}
-                    className="input mt-1 w-full"
                 />
             ) : (
-                <span className="text-[var(--text-primary)]">{value}</span>
+                <span className="value">{value}</span>
             )}
         </div>
     );
 
+
     return (
         <div className="p-10 flex flex-col gap-6 relative min-h-screen">
+
             {/* Top Buttons */}
             <div className="flex justify-between items-center mb-6">
-                <h2 className="font-bold text-xl">NFA Details</h2>
+                <h3 className="font-bold text-lg">NFA Details</h3>
                 <div className="flex gap-4">
-                    <button className="button-primary">Comparative Statement</button>
-                    {!isEdit && <button className="button-secondary" onClick={() => setIsEdit(true)}>Edit</button>}
+                    <button className="button-primary button-comparative">Comparative Statement</button>
+                    {!isEdit && <button className="button-secondary button-edit" onClick={() => setIsEdit(true)}>Edit</button>}
                 </div>
             </div>
 
             {/* Header Section */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                {renderHeaderCard("NFA Number", headerData.NfaNumber)}
-                {renderHeaderCard("Project", headerData.ProjectDescription)}
-                {renderHeaderCard("Status", headerData.Status)}
-                {renderHeaderCard("Risk Category", headerData.RiskCategory)}
-                {renderHeaderCard("Total Spend", headerData.TotalSpend)}
-                {renderHeaderCard("Base Line Spend", headerData.BaseLineSpend)}
-                {renderHeaderCard("Final Proposed Value", headerData.FinalProposedValue)}
-                {renderHeaderCard("Owner", headerData.Owner)}
-            </div>
+            <section className="page-section">
+                <h3 className="section-title">NFA Details</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    {renderHeaderCard("NFA Number", headerData.NfaNumber)}
+                    {renderHeaderCard("Project", headerData.ProjectDescription)}
+                    {renderHeaderCard("Status", headerData.Status)}
+                    {renderHeaderCard("Risk Category", headerData.RiskCategory)}
+                    {renderHeaderCard("Total Spend", headerData.TotalSpend)}
+                    {renderHeaderCard("Base Line Spend", headerData.BaseLineSpend)}
+                    {renderHeaderCard("Final Proposed Value", headerData.FinalProposedValue)}
+                    {renderHeaderCard("Owner", headerData.Owner)}
+                </div>
+            </section>
 
-            {/* Vendor Table */}
-            <div className="mt-6">
-                <h3 className="font-bold mb-2">Vendors</h3>
+            {/* Vendor Table Section */}
+            <section className="page-section">
+                <h3 className="section-title">Vendors</h3>
                 <input
                     type="text"
                     placeholder="Search Vendor..."
@@ -100,11 +104,7 @@ export default function NfaObject() {
                                     <td>
                                         <button
                                             className="button-back"
-                                            onClick={() => {
-                                                console.log(window.location.pathname.split("/"));
-                                                navigate(`${window.location.pathname}/vendor/${v.ProposedVendorCode}`);
-                                            }
-                                            }
+                                            onClick={() => navigate(`${window.location.pathname}/vendor/${v.ProposedVendorCode}`)}
                                         >
                                             &gt;
                                         </button>
@@ -114,11 +114,11 @@ export default function NfaObject() {
                         </tbody>
                     </table>
                 </div>
-            </div>
+            </section>
 
-            {/* Workflow Table */}
-            <div className="mt-6">
-                <h3 className="font-bold mb-2">Workflow History</h3>
+            {/* Workflow Table Section */}
+            <section className="page-section">
+                <h3 className="section-title">Workflow History</h3>
                 <input
                     type="text"
                     placeholder="Search Workflow..."
@@ -152,15 +152,16 @@ export default function NfaObject() {
                         </tbody>
                     </table>
                 </div>
-            </div>
+            </section>
 
             {/* Save / Discard Buttons */}
             {isEdit && (
                 <div className="fixed bottom-6 right-6 flex gap-4">
-                    <button className="button-primary" onClick={() => setIsEdit(false)}>Save</button>
-                    <button className="button-secondary" onClick={() => { setHeaderData(nfa); setIsEdit(false); }}>Discard</button>
+                    <button className="button-primary button-save" onClick={() => setIsEdit(false)}>Save</button>
+                    <button className="button-secondary button-discard" onClick={() => { setHeaderData(nfa); setIsEdit(false); }}>Discard</button>
                 </div>
             )}
         </div>
     );
+
 }

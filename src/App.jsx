@@ -1,8 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Layout from "./components/Layout";
 import Dashboard from "./pages/Dashboard";
-import NfaDetailPage from "./pages/buyer/NfaDetailPage";
-import VendorDetailPage from "./pages/buyer/VendorDetailPage";
 import Home from "./pages/Home";
 import NfaObject from "./pages/NfaObject";
 import VendorObject from "./pages/VendorObject";

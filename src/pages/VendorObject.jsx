@@ -40,29 +40,33 @@ export default function VendorObject() {
 
     return (
         <div className="p-10 flex flex-col gap-6 relative min-h-screen">
+
             {/* Header Top Buttons */}
             <div className="flex justify-between items-center mb-6">
-                <h2 className="font-bold text-xl">Vendor Details</h2>
+                <h3 className="font-bold text-xl">Vendor Details</h3>
                 <div className="flex gap-4">
-                    {!isEdit && <button className="button-secondary" onClick={() => setIsEdit(true)}>Edit</button>}
+                    {!isEdit && <button className="button-secondary button-edit" onClick={() => setIsEdit(true)}>Edit</button>}
                 </div>
             </div>
 
-            {/* Vendor Header Card - SAP UI5 Object Page style */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                {renderCardItem("Vendor Name", vendorData.VendorName)}
-                {renderCardItem("Original Quote", vendorData.OriginalQuote)}
-                {renderCardItem("Final Quote", vendorData.FinalQuote)}
-                {renderCardItem("Awarded Vendor", vendorData.AwardedVendor ? "Yes" : "No")}
-                {renderCardItem("Contract Period", vendorData.ContractPeriod + " months")}
-                {renderCardItem("Contract Value", vendorData.ContractValueBasicValue)}
-                {renderCardItem("Budget", vendorData.Budget)}
-                {renderCardItem("Delivery Lead Time", vendorData.DeliveryLeadTime)}
-            </div>
+            {/* Vendor Header Section */}
+            <section className="page-section">
+                <h3 className="section-title">Vendor Information</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    {renderCardItem("Vendor Name", vendorData.VendorName)}
+                    {renderCardItem("Original Quote", vendorData.OriginalQuote)}
+                    {renderCardItem("Final Quote", vendorData.FinalQuote)}
+                    {renderCardItem("Awarded Vendor", vendorData.AwardedVendor ? "Yes" : "No")}
+                    {renderCardItem("Contract Period", vendorData.ContractPeriod + " months")}
+                    {renderCardItem("Contract Value", vendorData.ContractValueBasicValue)}
+                    {renderCardItem("Budget", vendorData.Budget)}
+                    {renderCardItem("Delivery Lead Time", vendorData.DeliveryLeadTime)}
+                </div>
+            </section>
 
-            {/* Workflow Table */}
-            <div className="mt-8">
-                <h3 className="font-bold mb-2">Vendor Workflow History</h3>
+            {/* Vendor Workflow Section */}
+            <section className="page-section mt-6">
+                <h3 className="section-title">Vendor Workflow History</h3>
                 <input
                     type="text"
                     placeholder="Search Workflow..."
@@ -102,14 +106,14 @@ export default function VendorObject() {
                         </tbody>
                     </table>
                 </div>
-            </div>
+            </section>
 
             {/* Save / Discard Buttons fixed bottom-right */}
             {isEdit && (
                 <div className="fixed bottom-6 right-6 flex gap-4">
-                    <button className="button-primary" onClick={() => setIsEdit(false)}>Save</button>
+                    <button className="button-primary button-save" onClick={() => setIsEdit(false)}>Save</button>
                     <button
-                        className="button-secondary"
+                        className="button-secondary button-discard"
                         onClick={() => {
                             setVendorData(vendor);
                             setIsEdit(false);
@@ -121,4 +125,5 @@ export default function VendorObject() {
             )}
         </div>
     );
+
 }
