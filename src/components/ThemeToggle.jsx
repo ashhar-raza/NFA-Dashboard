@@ -7,7 +7,7 @@ export default function ThemeToggleButton() {
   return (
     <button
       onClick={toggleTheme}
-      className="btn-primary-gradient"
+      className="button-theme"
     >
       Switch to {theme === "light" ? "Dark" : "Light"} Mode
     </button>

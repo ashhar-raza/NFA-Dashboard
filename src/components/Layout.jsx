@@ -1,75 +1,60 @@
-import React, { useContext } from 'react';
-import { Outlet, useNavigate, useLocation } from 'react-router-dom';
-import { ThemeContext } from '../context/ThemeContext';
+import React, { useContext } from "react";
+import { Outlet, useNavigate, useLocation } from "react-router-dom";
+import { ThemeContext } from "../context/ThemeContext";
+import { Moon, Sun, LogOut, ArrowLeft } from "lucide-react";
 
 export default function Layout() {
   const { theme, toggleTheme } = useContext(ThemeContext);
   const navigate = useNavigate();
   const location = useLocation();
 
-  const handleLogout = () => navigate('/');
+  const handleLogout = () => navigate("/");
   const handleBack = () => navigate(-1);
 
-  const hideHeader = location.pathname === '/';
+  const hideHeader = location.pathname === "/";
+
+  // Extract the first part of the path to set title
+  const pathSegment = location.pathname.split("/")[1]; // e.g., "buyer"
+  const titleMap = {
+    buyer: "Buyer Dashboard",
+    approver: "Approver Dashboard",
+    vendor: "Vendor Dashboard",
+    admin: "Admin Dashboard",
+    // add more mappings if needed
+  };
+  const pageTitle = titleMap[pathSegment] || "Dashboard";
 
   return (
-    <div
-      className="min-h-screen flex flex-col transition-colors duration-500"
-      style={{ background: "var(--background)", color: "var(--foreground)" }}
-    >
+    <div className="min-h-screen flex flex-col transition-colors duration-500">
       {!hideHeader && (
         <header
-          className="flex items-center justify-between px-6 py-4 mb-6 rounded-lg"
-          style={{
-            background: "var(--card)",
-            borderBottom: "2px solid var(--border)",
-            boxShadow: "var(--shadow-card)",
-            backdropFilter: "blur(12px)",
-          }}
+          className="navbar flex-nowrap justify-between items-center px-6 py-3 rounded-xl shadow-lg mb-10"
+          style={{ display: "flex", flexWrap: "nowrap" }}
         >
           {/* Left: Back Button */}
-          <div>
-            <button
-              onClick={handleBack}
-              className="button-secondary"
-            >
-              ← Back
-            </button>
-          </div>
+          <button className="button-secondary flex items-center gap-2 px-4 py-2 text-sm" onClick={handleBack}>
+            <ArrowLeft size={20} /> Back
+          </button>
 
-          {/* Center: Heading */}
-          <h1
-            style={{
-              fontSize: "1.75rem",
-              fontWeight: 700,
-              textAlign: "center",
-              flex: 1,
-              color: "var(--foreground)",
-            }}
-          >
-            NFA Dashboard
+          {/* Center: Dynamic Heading */}
+          <h1 className="font-bold text-lg text-center flex-1 select-none">
+            {pageTitle}
           </h1>
 
-          {/* Right: Theme Toggle + Logout */}
+          {/* Right: Controls */}
           <div className="flex items-center gap-3">
-            <button
-              onClick={toggleTheme}
-              className="button"
-            >
-              {theme === "light" ? "Dark Mode" : "Light Mode"}
+            <button className="button-primary flex items-center gap-2 px-4 py-2 text-sm" onClick={toggleTheme}>
+              {theme === "light" ? <><Moon size={20} /> Dark</> : <><Sun size={20} /> Light</>}
             </button>
 
-            <button
-              onClick={handleLogout}
-              className="button-destructive"
-            >
-              Logout
+            <button className="button-destructive flex items-center gap-2 px-4 py-2 text-sm" onClick={handleLogout}>
+              <LogOut size={20} /> Logout
             </button>
           </div>
         </header>
       )}
 
-      <main className="flex-1 p-6">
+      <main className="flex-1 w-full px-10">
         <Outlet />
       </main>
     </div>
