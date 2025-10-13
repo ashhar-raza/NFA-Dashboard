@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { NfaVendorData, NfaWorkflowHistory } from "../data/data";
 
-export default function VendorObject() {
+export default function VendorObject({role}) {
     const { vendorCode } = useParams();
     const navigate = useNavigate();
     const [isEdit, setIsEdit] = useState(false);
@@ -45,7 +45,7 @@ export default function VendorObject() {
             <div className="flex justify-between items-center mb-6">
                 <h3 className="font-bold text-xl">Vendor Details</h3>
                 <div className="flex gap-4">
-                    {!isEdit && <button className="button-secondary button-edit" onClick={() => setIsEdit(true)}>Edit</button>}
+                    {!isEdit && role == 'buyer' && (<button className="button-secondary button-edit" onClick={() => setIsEdit(true)}>Edit</button>)}
                 </div>
             </div>
 
@@ -75,7 +75,7 @@ export default function VendorObject() {
                     onChange={(e) => setWorkflowSearch(e.target.value)}
                 />
                 <div className="overflow-x-auto">
-                    <table className="table">
+                    <table className="tableBtn">
                         <thead>
                             <tr>
                                 <th>Level</th>
