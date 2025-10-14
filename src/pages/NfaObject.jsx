@@ -2,9 +2,10 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { NfaDetails, NfaVendorData, NfaWorkflowHistory } from "../data/data";
 
-export default function NfaObject() {
+export default function NfaObject({ role }) {
     const { nfaNumber } = useParams();
     const navigate = useNavigate();
+
     const [isEdit, setIsEdit] = useState(false);
     const [headerData, setHeaderData] = useState({});
     const [vendorSearch, setVendorSearch] = useState("");
@@ -57,6 +58,10 @@ export default function NfaObject() {
         </div>
     );
 
+    // Approver button handlers
+    const handleClarification = () => alert("Need for Clarification clicked");
+    const handleApprove = () => alert("Approve clicked");
+    const handleReject = () => alert("Reject clicked");
 
     return (
         <div className="p-10 flex flex-col gap-6 relative min-h-screen">
@@ -65,8 +70,16 @@ export default function NfaObject() {
             <div className="flex justify-between items-center mb-6">
                 <h3 className="font-bold text-lg">NFA Details</h3>
                 <div className="flex gap-4">
-                    <button className="button-primary button-comparative">Comparative Statement</button>
-                    {!isEdit && <button className="button-secondary button-edit" onClick={() => setIsEdit(true)}>Edit</button>}
+                    {/* Comparative button */}
+                    {(role === "approver") && !isEdit && (
+                        <button className="button-primary button-comparative" onClick={() => {
+                            navigate(`/approver/comparative/${nfaNumber}`)
+                        }}>Comparative Statement</button>
+                    )}
+                    {/* Edit button */}
+                    {(role === "buyer") && !isEdit && (
+                        <button className="button-secondary button-edit" onClick={() => setIsEdit(true)}>Edit</button>
+                    )}
                 </div>
             </div>
 
@@ -177,7 +190,7 @@ export default function NfaObject() {
                     onChange={(e) => setWorkflowSearch(e.target.value)}
                 />
                 <div className="overflow-x-auto">
-                    <table className="table">
+                    <table className="tableBtn">
                         <thead>
                             <tr >
                                 <th>Level</th>
@@ -204,14 +217,23 @@ export default function NfaObject() {
                 </div>
             </section>
 
-            {/* Save / Discard Buttons */}
+            {/* Bottom Buttons */}
             {isEdit && (
                 <div className="fixed bottom-6 right-6 flex gap-4">
                     <button className="button-primary button-save" onClick={() => setIsEdit(false)}>Save</button>
                     <button className="button-secondary button-discard" onClick={() => { setHeaderData(nfa); setIsEdit(false); }}>Discard</button>
                 </div>
             )}
+
+            {role === "approver" && !isEdit && (
+                <section >
+                    <div className=" flex gap-4 items-end justify-end">
+                        <button className="button-secondary button-clarification" onClick={handleClarification}>Need for Clarification</button>
+                        <button className="button-primary button-save" onClick={handleApprove}>Approve</button>
+                        <button className="button-destructive button-logout" onClick={handleReject}>Reject</button>
+                    </div>
+                </section>
+            )}
         </div>
     );
-
 }

@@ -32,7 +32,7 @@ export default function Layout() {
           style={{ display: "flex", flexWrap: "nowrap" }}
         >
           {/* Left: Back Button */}
-          <button className="button-secondary button-back flex items-center gap-2 px-4 py-2 text-sm" onClick={handleBack}>
+          <button className="button-secondary button-back flex items-center gap-2  text-sm" onClick={handleBack}>
             <ArrowLeft size={20} /> Back
           </button>
 
@@ -43,9 +43,9 @@ export default function Layout() {
 
           {/* Right: Controls */}
           <div className="flex items-center gap-3">
-            <button className="button-primary  flex items-center gap-2 px-4 py-2 text-sm" onClick={toggleTheme}>
+            {/* <button className="button-primary  flex items-center gap-2 px-4 py-2 text-sm" onClick={toggleTheme}>
               {theme === "light" ? <><Moon size={20} /> Dark</> : <><Sun size={20} /> Light</>}
-            </button>
+            </button> */}
 
             <button className="button-destructive button-logout flex items-center gap-2 px-4 py-2 text-sm" onClick={handleLogout}>
               <LogOut size={20} /> Logout

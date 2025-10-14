@@ -11,7 +11,7 @@ export default function Dashboard() {
   ];
 
   return (
-    <div className="h-screen flex justify-center items-center bg-gray-100">
+    <div className="h-screen flex justify-center items-center ">
       <div className="flex flex-col gap-12 p-6 w-full max-w-7xl">
         <h2 className="text-4xl font-bold text-center text-gray-800">NFA Dashboard</h2>
 
