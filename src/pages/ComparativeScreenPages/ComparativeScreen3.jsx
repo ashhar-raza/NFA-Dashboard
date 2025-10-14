@@ -57,7 +57,7 @@ export default function ComparativeScreen3() {
           className="flex justify-between items-center cursor-pointer"
           onClick={() => setShowNfaDetails(!showNfaDetails)}
         >
-          <h3 style={{ color: theme.primary }} className="text-2xl font-bold mb-4 flex items-center gap-2">
+          <h3 style={{ color: theme.primary }} className="text-2xl font-bold flex items-center gap-2">
             NFA Details
             {showNfaDetails ? <FaChevronUp /> : <FaChevronDown />}
           </h3>

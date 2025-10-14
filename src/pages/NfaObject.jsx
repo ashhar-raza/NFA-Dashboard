@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { NfaDetails, NfaVendorData, NfaWorkflowHistory } from "../data/data";
+import { FileText } from "lucide-react"; // PDF icon
 
 export default function NfaObject({ role }) {
     const { nfaNumber } = useParams();
@@ -44,7 +45,10 @@ export default function NfaObject({ role }) {
 
     // Render card item like SAP UI5 Object Page
     const renderHeaderCard = (key, value) => (
-        <div className="header-card">
+        <div
+            className="flex flex-col p-4 rounded-lg shadow-lg card"
+            style={{ backgroundColor: "var(--card)" }}
+        >
             <span className="key">{key}</span>
             {isEdit ? (
                 <input
@@ -147,31 +151,50 @@ export default function NfaObject({ role }) {
             <section className="page-section">
                 <div className="flex justify-between items-center mb-2">
                     <h3 className="section-title">Attachments</h3>
-                    <label className="button-primary cursor-pointer">
-                        Upload
-                        <input
-                            type="file"
-                            multiple
-                            className="hidden"
-                            onChange={handleAttachmentUpload}
-                        />
-                    </label>
+
+                    {/* Show Upload button only in edit mode */}
+                    {isEdit && (
+                        <label className="button-primary cursor-pointer">
+                            Upload
+                            <input
+                                type="file"
+                                multiple
+                                className="hidden"
+                                onChange={handleAttachmentUpload}
+                            />
+                        </label>
+                    )}
                 </div>
+
 
                 <div className="attachment-container">
                     {attachments.length ? (
                         attachments.map((att, i) => (
                             <div
                                 key={i}
-                                className="attachment-row"
+                                className="attachment-row flex items-start gap-3 p-3 bg-white rounded-xl shadow-sm hover:shadow-md cursor-pointer transition"
                                 onClick={() => window.open(att.url, "_blank")}
                             >
-                                <span className="attachment-name">{att.name}</span>
-                                <span className="attachment-date">{att.uploadedAt}</span>
+                                {/* Icon */}
+                                <div className="text-red-500 mt-1">
+                                    <FileText size={28} />
+                                </div>
+
+                                {/* Text Details */}
+                                <div className="flex flex-col">
+                                    <span className="attachment-name font-medium text-gray-800">
+                                        {att.name}
+                                    </span>
+                                    <span className="attachment-date text-sm text-gray-500">
+                                        {att.uploadedAt}
+                                    </span>
+                                </div>
                             </div>
                         ))
                     ) : (
-                        <div className="attachment-row text-center text-muted">No attachments uploaded.</div>
+                        <div className="attachment-row text-center text-gray-400 py-3">
+                            No attachments uploaded.
+                        </div>
                     )}
                 </div>
             </section>

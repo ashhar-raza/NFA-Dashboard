@@ -5,6 +5,8 @@ import Home from "./pages/Home";
 import NfaObject from "./pages/NfaObject";
 import VendorObject from "./pages/VendorObject";
 import ComparativeScreen3 from "./pages/ComparativeScreenPages/ComparativeScreen3";
+import ComparativeScreen4 from "./pages/ComparativeScreenPages/ComparativeScreen4";
+import VendorHome from "./pages/VendorHome";
 
 
 function App() {
@@ -35,7 +37,11 @@ function App() {
           />
           <Route
             path="approver/comparative/:nfaNumber"
-            element={<ComparativeScreen3/>}
+            element={<ComparativeScreen3 />}
+          />
+          <Route
+            path="approver/comparative/:nfaNumber/4"
+            element={<ComparativeScreen4 />}
           />
 
           {/* Admin Routes */}
@@ -47,7 +53,8 @@ function App() {
           />
 
           {/* Vendor Routes */}
-          <Route path="vendor" element={<Home role="vendor" />} />
+          {/* <Route path="vendor" element={<Home role="vendor" />} /> */}
+          <Route path="vendor" element={<VendorHome />} />
           <Route path="vendor/:nfaNumber" element={<NfaObject role="vendor" />} />
           <Route
             path="vendor/:nfaNumber/vendor/:vendorCode"

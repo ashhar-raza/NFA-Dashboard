@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { NfaVendorData, NfaWorkflowHistory } from "../data/data";
 
-export default function VendorObject({role}) {
+export default function VendorObject({ role }) {
     const { vendorCode } = useParams();
     const navigate = useNavigate();
     const [isEdit, setIsEdit] = useState(false);
@@ -22,7 +22,10 @@ export default function VendorObject({role}) {
 
     // Render single key-value card item (stacked like SAP UI5 Object Page)
     const renderCardItem = (key, value) => (
-        <div className="flex flex-col p-4 rounded-lg shadow-lg bg-[var(--card-bg)]">
+        <div
+            className="flex flex-col p-4 rounded-lg shadow-lg"
+            style={{ backgroundColor: "var(--card)" }}
+        >
             <span className="text-[var(--text-muted)] font-semibold">{key}</span>
             {isEdit ? (
                 <input
