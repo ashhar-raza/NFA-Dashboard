@@ -519,7 +519,7 @@ label {
   background: var(--card);
   text-align: center;
   color: var(--foreground);
-  padding: 0.5rem 1.rem;
+  padding: 0.1rem 0.25rem;
   border-bottom: 1px solid var(--border-light);
   font-size: 0.875rem;
 }
@@ -1006,4 +1006,40 @@ label {
   font-weight: 700;
   margin-bottom: 1rem;
   color: var(--text-primary);
+}
+
+
+.attachment-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid var(--border-light);
+  color: var(--foreground);
+  font-size: 0.875rem;
+  cursor: pointer;
+  background: var(--card);
+  transition: background 0.2s, color 0.2s;
+}
+
+.attachment-row:nth-child(even) {
+  background: var(--background-alt);
+}
+
+.attachment-row:hover {
+  background: var(--accent);
+  color: var(--accent-foreground);
+}
+
+.attachment-name {
+  /* flex: 1; */
+  /* text-align: left; */
+  font-weight: 500;
+}
+
+.attachment-date {
+  /* flex: 0;
+  text-align: right; */
+  font-size: 0.75rem;
+  color: var(--text-muted);
 }

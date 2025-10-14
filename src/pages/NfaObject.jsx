@@ -19,6 +19,20 @@ export default function NfaObject() {
             w.Status.toLowerCase().includes(workflowSearch.toLowerCase())
         );
 
+    const [attachments, setAttachments] = useState([]);
+
+    // Handler for file upload
+    const handleAttachmentUpload = (e) => {
+        const files = Array.from(e.target.files);
+        const newAttachments = files.map((file) => ({
+            name: file.name,
+            url: URL.createObjectURL(file),
+            uploadedAt: new Date().toLocaleString(), // store uploaded date
+        }));
+        setAttachments((prev) => [...prev, ...newAttachments]);
+    };
+
+
     useEffect(() => {
         if (nfa) setHeaderData(nfa);
     }, [nfa]);
@@ -116,6 +130,42 @@ export default function NfaObject() {
                 </div>
             </section>
 
+            {/* Attachment Section */}
+            <section className="page-section">
+                <div className="flex justify-between items-center mb-2">
+                    <h3 className="section-title">Attachments</h3>
+                    <label className="button-primary cursor-pointer">
+                        Upload
+                        <input
+                            type="file"
+                            multiple
+                            className="hidden"
+                            onChange={handleAttachmentUpload}
+                        />
+                    </label>
+                </div>
+
+                <div className="attachment-container">
+                    {attachments.length ? (
+                        attachments.map((att, i) => (
+                            <div
+                                key={i}
+                                className="attachment-row"
+                                onClick={() => window.open(att.url, "_blank")}
+                            >
+                                <span className="attachment-name">{att.name}</span>
+                                <span className="attachment-date">{att.uploadedAt}</span>
+                            </div>
+                        ))
+                    ) : (
+                        <div className="attachment-row text-center text-muted">No attachments uploaded.</div>
+                    )}
+                </div>
+            </section>
+
+
+
+
             {/* Workflow Table Section */}
             <section className="page-section">
                 <h3 className="section-title">Workflow History</h3>
@@ -129,7 +179,7 @@ export default function NfaObject() {
                 <div className="overflow-x-auto">
                     <table className="table">
                         <thead>
-                            <tr>
+                            <tr >
                                 <th>Level</th>
                                 <th>Employee Name</th>
                                 <th>Status</th>

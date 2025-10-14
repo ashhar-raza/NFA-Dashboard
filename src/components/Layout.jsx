@@ -55,8 +55,6 @@ export default function Layout() {
       )}
 
       <main className=" margin-10px" style={{ margin: "0 20px 20px", padding: "5px 10px" }}>
-
-
         <Outlet />
       </main>
     </div>
