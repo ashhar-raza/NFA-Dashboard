@@ -434,6 +434,7 @@ export const NfaVendorDueDeligenceDetails = [
 
 // NFA Vendor Due Diligence Grade
 export const NfaVendorDueDeligenceDetailsGrade = [
+  // Doc85512143 - V001
   {
     ID: "DG001",
     NfaNumber: "Doc85512143",
@@ -447,6 +448,28 @@ export const NfaVendorDueDeligenceDetailsGrade = [
   {
     ID: "DG002",
     NfaNumber: "Doc85512143",
+    ProposedVendorCode: "V001",
+    round: 1,
+    MinScore: "0",
+    MaxScore: "5",
+    Category: "Operational Risk",
+    GradeDescription: "Low Risk",
+  },
+  {
+    ID: "DG003",
+    NfaNumber: "Doc85512143",
+    ProposedVendorCode: "V001",
+    round: 1,
+    MinScore: "0",
+    MaxScore: "5",
+    Category: "Compliance",
+    GradeDescription: "Low Risk",
+  },
+
+  // Doc85512143 - V002
+  {
+    ID: "DG004",
+    NfaNumber: "Doc85512143",
     ProposedVendorCode: "V002",
     round: 1,
     MinScore: "6",
@@ -455,7 +478,29 @@ export const NfaVendorDueDeligenceDetailsGrade = [
     GradeDescription: "Medium Risk",
   },
   {
-    ID: "DG003",
+    ID: "DG005",
+    NfaNumber: "Doc85512143",
+    ProposedVendorCode: "V002",
+    round: 1,
+    MinScore: "6",
+    MaxScore: "10",
+    Category: "Operational Risk",
+    GradeDescription: "Medium Risk",
+  },
+  {
+    ID: "DG006",
+    NfaNumber: "Doc85512143",
+    ProposedVendorCode: "V002",
+    round: 1,
+    MinScore: "6",
+    MaxScore: "10",
+    Category: "Compliance",
+    GradeDescription: "Medium Risk",
+  },
+
+  // Doc85512144 - V004
+  {
+    ID: "DG007",
     NfaNumber: "Doc85512144",
     ProposedVendorCode: "V004",
     round: 1,
@@ -465,7 +510,19 @@ export const NfaVendorDueDeligenceDetailsGrade = [
     GradeDescription: "Medium Risk",
   },
   {
-    ID: "DG004",
+    ID: "DG008",
+    NfaNumber: "Doc85512144",
+    ProposedVendorCode: "V004",
+    round: 1,
+    MinScore: "6",
+    MaxScore: "10",
+    Category: "Operational Risk",
+    GradeDescription: "Medium Risk",
+  },
+
+  // Doc85512144 - V005
+  {
+    ID: "DG009",
     NfaNumber: "Doc85512144",
     ProposedVendorCode: "V005",
     round: 1,
@@ -473,6 +530,26 @@ export const NfaVendorDueDeligenceDetailsGrade = [
     MaxScore: "5",
     Category: "Financial Stability",
     GradeDescription: "Low Risk",
+  },
+  {
+    ID: "DG010",
+    NfaNumber: "Doc85512144",
+    ProposedVendorCode: "V005",
+    round: 1,
+    MinScore: "0",
+    MaxScore: "5",
+    Category: "Operational Risk",
+    GradeDescription: "Low Risk",
+  },
+  {
+    ID: "DG011",
+    NfaNumber: "Doc85512144",
+    ProposedVendorCode: "V005",
+    round: 1,
+    MinScore: "0",
+    MaxScore: "5",
+    Category: "Compliance",
+    GradeDescription: "Low Risk",
   }
-  // Add similar entries for other NFAs and rounds
 ];
+

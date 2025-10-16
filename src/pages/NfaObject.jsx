@@ -126,7 +126,11 @@ export default function NfaObject({ role }) {
                         </thead>
                         <tbody>
                             {vendors.length ? vendors.map((v) => (
-                                <tr key={v.ProposedVendorCode}>
+                                <tr
+                                    key={v.ProposedVendorCode}
+                                    className="cursor-pointer hover:bg-gray-100" // optional hover effect
+                                    onClick={() => navigate(`${window.location.pathname}/vendor/${v.ProposedVendorCode}`)}
+                                >
                                     <td>{v.VendorName}</td>
                                     <td>{v.OriginalQuote}</td>
                                     <td>{v.FinalQuote}</td>
@@ -135,14 +139,20 @@ export default function NfaObject({ role }) {
                                     <td>
                                         <button
                                             className="button-back"
-                                            onClick={() => navigate(`${window.location.pathname}/vendor/${v.ProposedVendorCode}`)}
+                                            onClick={(e) => {
+                                                e.stopPropagation(); // prevent triggering row click
+                                                navigate(`${window.location.pathname}/vendor/${v.ProposedVendorCode}`);
+                                            }}
                                         >
                                             &gt;
                                         </button>
                                     </td>
                                 </tr>
-                            )) : <tr><td colSpan={6} className="text-center p-4 text-muted">No vendors found.</td></tr>}
+                            )) : (
+                                <tr><td colSpan={6} className="text-center p-4 text-muted">No vendors found.</td></tr>
+                            )}
                         </tbody>
+
                     </table>
                 </div>
             </section>

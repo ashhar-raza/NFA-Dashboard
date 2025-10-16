@@ -1,128 +1,120 @@
-import React, { useState, useEffect } from "react";
-import { NfaDetails, NfaVendorDueDeligenceDetails } from "../data/data";
-import { FaFileExport } from "react-icons/fa";
-import { FileText } from "lucide-react"; // PDF / export icon
+// VendorHome.jsx
+import React, { useState, useMemo } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { NfaVendorData } from "../data/data";
 
 export default function VendorHome() {
-  const [riskSummary, setRiskSummary] = useState({ High: 0, Medium: 0, Low: 0 });
-  const [highRiskNfa, setHighRiskNfa] = useState([]);
-  const [dueDeligenceStatus, setDueDeligenceStatus] = useState({ Completed: 0, Missing: 0 });
+  const { nfaNumber } = useParams();
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    // Compute vendor risk summary
-    const riskCount = { High: 0, Medium: 0, Low: 0 };
-    NfaVendorDueDeligenceDetails.forEach((v) => {
-      if (v.RiskGrade === "High") riskCount.High += 1;
-      else if (v.RiskGrade === "Medium") riskCount.Medium += 1;
-      else riskCount.Low += 1;
-    });
-    setRiskSummary(riskCount);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [awardFilter, setAwardFilter] = useState(""); // filter by awarded vendor
+  const [roundFilter, setRoundFilter] = useState(""); // filter by round
+  console.log(NfaVendorData);
 
-    // High-risk vendors NFAs
-    const highRisk = NfaVendorDueDeligenceDetails.filter((v) => v.RiskGrade === "High").map((v) => {
-      const nfa = NfaDetails.find((n) => n.NfaNumber === v.NfaNumber);
-      return { NfaNumber: v.NfaNumber, FinalProposedValue: nfa?.FinalProposedValue || 0 };
-    });
-    setHighRiskNfa(highRisk);
 
-    // Due diligence status
-    let completed = 0;
-    let missing = 0;
-    NfaVendorDueDeligenceDetails.forEach((v) => {
-      if (v.CompanyName && v.CompanyStatus) completed += 1;
-      else missing += 1;
-    });
-    setDueDeligenceStatus({ Completed: completed, Missing: missing });
-  }, []);
-
-  const exportAuditTrail = () => {
-    const csvHeader = "NfaNumber,VendorCode,Round,RiskGrade,DueDeligenceStatus\n";
-    const csvRows = NfaVendorDueDeligenceDetails.map(
-      (v) => `${v.NfaNumber},${v.ProposedVendorCode},${v.round},${v.RiskGrade},${v.CompanyName ? "Completed" : "Missing"}`
+  // Get vendors for the current NFA
+  const vendors = useMemo(() => {
+    const nfaVendors = NfaVendorData.filter(
+      v => v.NfaNumber.toLowerCase() === nfaNumber.toLowerCase()
     );
-    const csvContent = "data:text/csv;charset=utf-8," + [csvHeader, ...csvRows].join("\n");
-    const encodedUri = encodeURI(csvContent);
-    const link = document.createElement("a");
-    link.setAttribute("href", encodedUri);
-    link.setAttribute("download", "vendor_audit_trail.csv");
-    document.body.appendChild(link);
-    link.click();
-  };
+
+    const uniqueMap = {};
+    nfaVendors.forEach(v => {
+      if (!uniqueMap[v.ProposedVendorCode] || uniqueMap[v.ProposedVendorCode].round < v.round) {
+        uniqueMap[v.ProposedVendorCode] = v;
+      }
+    });
+
+    let result = Object.values(uniqueMap);
+
+    if (searchTerm) {
+      const lower = searchTerm.toLowerCase();
+      result = result.filter(v => v.VendorName.toLowerCase().includes(lower));
+    }
+    if (awardFilter) {
+      result = result.filter(v => (awardFilter === "awarded" ? v.AwardedVendor : !v.AwardedVendor));
+    }
+    if (roundFilter) {
+      result = result.filter(v => v.round === Number(roundFilter));
+    }
+
+    return result;
+  }, [nfaNumber, searchTerm, awardFilter, roundFilter]);
 
   return (
-    <div className="p-6 bg-background min-h-screen">
-      <h1 className="text-2xl font-bold text-text-primary mb-4">Vendor Compliance Dashboard</h1>
+    <div className="flex flex-col gap-6 px-10 mx-10">
 
-      {/* Risk Summary */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-        {["High", "Medium", "Low"].map((level) => (
-          <div
-            key={level}
-            className={`card flex flex-col items-center justify-center p-4`}
-          >
-            <h3 className="text-lg font-semibold mb-2">{level} Risk Vendors</h3>
-            <p
-              className={`text-3xl font-bold ${
-                level === "High"
-                  ? "text-risk-high"
-                  : level === "Medium"
-                  ? "text-risk-medium"
-                  : "text-risk-low"
-              }`}
-            >
-              {riskSummary[level]}
-            </p>
-          </div>
-        ))}
+      {/* Filters */}
+      <div className="flex flex-wrap gap-2 items-center mb-4">
+        <input
+          type="text"
+          placeholder="Search Vendor..."
+          className="input flex-[0_0_60%]"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+        <div className="flex gap-2 flex-[0_0_40%]">
+          <select className="select flex-1" value={awardFilter} onChange={(e) => setAwardFilter(e.target.value)}>
+            <option value="">All Vendors</option>
+            <option value="awarded">Awarded</option>
+            <option value="not-awarded">Not Awarded</option>
+          </select>
+          <select className="select flex-1" value={roundFilter} onChange={(e) => setRoundFilter(e.target.value)}>
+            <option value="">All Rounds</option>
+            {[...new Set(NfaVendorData.filter(v => v.NfaNumber === nfaNumber).map(v => v.round))].map(r => (
+              <option key={r} value={r}>{r}</option>
+            ))}
+          </select>
+        </div>
       </div>
 
-      {/* High-risk NFAs Table */}
-      <div className="card p-4 mb-6">
-        <h2 className="section-title">High-Risk NFAs</h2>
-        {highRiskNfa.length === 0 ? (
-          <p className="text-muted">No high-risk vendor NFAs found.</p>
-        ) : (
-          <div className="table-container">
-            <table className="table">
-              <thead>
-                <tr>
-                  <th>NFA Number</th>
-                  <th>Final Value (INR)</th>
+      {/* Table */}
+      <div className="overflow-x-auto">
+        <table className="table">
+          <thead>
+            <tr>
+              <th>Vendor Code</th>
+              <th>Vendor Name</th>
+              <th>Latest Round</th>
+              <th>Final Quote</th>
+              <th>Awarded Vendor</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {vendors.length ? (
+              vendors.map(v => (
+                <tr
+                  key={v.ProposedVendorCode}
+                  className="cursor-pointer hover:bg-gray-100"
+                  onClick={() => navigate(`${window.location.pathname}/vendor/${v.ProposedVendorCode}`)}
+                >
+                  <td>{v.ProposedVendorCode}</td>
+                  <td>{v.VendorName}</td>
+                  <td>{v.round}</td>
+                  <td>{v.FinalQuote}</td>
+                  <td>{v.AwardedVendor ? "Yes" : "No"}</td>
+                  <td>
+                    <button
+                      className="button-back"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigate(`${window.location.pathname}/vendor/${v.ProposedVendorCode}`);
+                      }}
+                    >
+                      &gt;
+                    </button>
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                {highRiskNfa.map((n, idx) => (
-                  <tr key={idx}>
-                    <td>{n.NfaNumber}</td>
-                    <td>{n.FinalProposedValue}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
-      </div>
-
-      {/* Due Diligence Status */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-        <div className="card flex flex-col items-center justify-center p-4">
-          <h3 className="text-lg font-semibold mb-2">Due Diligence Completed</h3>
-          <p className="text-3xl font-bold text-success">{dueDeligenceStatus.Completed}</p>
-        </div>
-        <div className="card flex flex-col items-center justify-center p-4">
-          <h3 className="text-lg font-semibold mb-2">Due Diligence Missing</h3>
-          <p className="text-3xl font-bold text-destructive">{dueDeligenceStatus.Missing}</p>
-        </div>
-      </div>
-
-      {/* Export Button */}
-      <div className="flex justify-end">
-        <button
-          onClick={exportAuditTrail}
-          className="button-comparative flex py-4"
-        >
-          <FileText /> Export Audit Trail
-        </button>
+              ))
+            ) : (
+              <tr>
+                <td colSpan={6} className="text-center p-4 text-muted">No vendors found.</td>
+              </tr>
+            )}
+          </tbody>
+        </table>
       </div>
     </div>
   );

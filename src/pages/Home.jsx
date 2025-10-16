@@ -30,8 +30,8 @@ export default function Home() {
         ? totalSpendFilter === "low"
           ? Number(item.TotalSpend) < 20000
           : totalSpendFilter === "medium"
-          ? Number(item.TotalSpend) >= 20000 && Number(item.TotalSpend) <= 50000
-          : Number(item.TotalSpend) > 50000
+            ? Number(item.TotalSpend) >= 20000 && Number(item.TotalSpend) <= 50000
+            : Number(item.TotalSpend) > 50000
         : true;
 
       const matchesRfpDate = rfpDateFilter
@@ -45,11 +45,11 @@ export default function Home() {
   return (
     <div className="flex flex-col gap-6 px-10 mx-10">
       {/* Filters: 60% search, 40% filters */}
-      <div className="flex flex-wrap gap-4 items-center">
+      <div className="flex flex-wrap gap-2 items-center">
         <input
           type="text"
           placeholder="Search..."
-          className="input flex-[0_0_60%] p-2"
+          className="input flex-[0_0_60%]"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
@@ -94,7 +94,11 @@ export default function Home() {
           <tbody>
             {filteredData.length ? (
               filteredData.map((item) => (
-                <tr key={item.NfaNumber}>
+                <tr
+                  key={item.NfaNumber}
+                  className="cursor-pointer hover:bg-gray-100"
+                  onClick={() => navigate(`${window.location.pathname}/${item.NfaNumber}`)} // row click navigation
+                >
                   <td>{item.NfaNumber}</td>
                   <td><span className={`status-${item.Status.toLowerCase()} status-badge`}>{item.Status}</span></td>
                   <td>{item.DueDeligenceStatus ? "Yes" : "No"}</td>
@@ -106,7 +110,10 @@ export default function Home() {
                   <td>
                     <button
                       className="button-back"
-                      onClick={() =>  navigate(`${window.location.pathname}/${item.NfaNumber}`)}
+                      onClick={(e) => {
+                        e.stopPropagation(); // prevent row click when button is clicked
+                        navigate(`${window.location.pathname}/${item.NfaNumber}`)
+                      }}
                     >
                       &gt;
                     </button>
@@ -119,8 +126,9 @@ export default function Home() {
               </tr>
             )}
           </tbody>
+
         </table>
       </div>
-    </div>
+    </div >
   );
 }
